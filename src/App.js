@@ -34,13 +34,11 @@ function App() {
 
   return (
     <>
+      <ParticlesBg type="cobweb" bg={true} color="ff0000" />
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/login"
-            element={user ? <Navigate to="/dashboard" /> : <Login />}
-          />
+
           <Route
             path="/register"
             element={user ? <Navigate to="/dashboard" /> : <Register />}
@@ -48,12 +46,11 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              user ? <Dashboard isAdmin={isAdmin} /> : <Navigate to="/login" />
+              user ? <Dashboard isAdmin={isAdmin} /> : <Navigate to="/" />
             }
           />
         </Routes>
       </Router>
-      <ParticlesBg type="circle" bg={true} color="#ff0000" />
     </>
   );
 }

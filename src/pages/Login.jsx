@@ -2,6 +2,7 @@ import { useState } from "react";
 import { auth } from "../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import ParticlesBg from "particles-bg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,7 +20,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen  text-zinc-800">
+      <ParticlesBg type="circle" bg={true} color="#0000ff" />
       <h2 className="text-2xl font-bold">Prihláste sa</h2>
       <form className="flex flex-col gap-4" onSubmit={handleLogin}>
         <input
@@ -29,6 +31,7 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
           className="border p-2"
+          color="black"
         />
         <input
           type="password"

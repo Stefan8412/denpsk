@@ -3,7 +3,7 @@ import { auth, db } from "../firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-
+import ParticlesBg from "particles-bg";
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,8 +33,9 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h2 className="text-2xl font-bold">Register</h2>
+    <div className="flex flex-col items-center justify-center min-h-screen  text-zinc-50">
+      <ParticlesBg type="circle" bg={true} color="0000ff" />
+      <h2 className="text-2xl font-bold">Registrácia</h2>
       <form className="flex flex-col gap-4" onSubmit={handleRegister}>
         <input
           type="email"
@@ -42,7 +43,7 @@ const Register = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="border p-2"
+          className="border p-2 rounded text-black"
         />
         <input
           type="password"
@@ -50,18 +51,18 @@ const Register = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="border p-2"
+          className="border p-2 rounded text-black"
         />
         <input
           type="text"
-          placeholder="Organizacia"
+          placeholder="Organizácia"
           value={organization}
           onChange={(e) => setOrganization(e.target.value)}
           required
-          className="border p-2"
+          className="border p-2 rounded text-black"
         />
         <button type="submit" className="bg-blue-500 text-white p-2">
-          Register
+          Registrácia
         </button>
       </form>
     </div>
