@@ -34,7 +34,12 @@ function App() {
 
   return (
     <>
-      <ParticlesBg type="cobweb" bg={true} color="ff0000" />
+      <ParticlesBg
+        type="polygon
+      "
+        bg={true}
+        color="ff0000"
+      />
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />

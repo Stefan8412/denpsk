@@ -42,6 +42,36 @@ const Home = () => {
       }
     };
   }, []);
+  let config = {
+    num: [4, 7],
+    rps: 0.1,
+    radius: [5, 40],
+    life: [1.5, 3],
+    v: [2, 3],
+    tha: [-40, 40],
+    // body: "./img/icon.png", // Whether to render pictures
+    // rotate: [0, 20],
+    alpha: [0.6, 0],
+    scale: [1, 0.1],
+    position: "center", // all or center or {x:1,y:1,width:100,height:100}
+    color: ["random", "#0000ff"],
+    cross: "dead", // cross or bround
+    random: 15, // or null,
+    g: 5, // gravity
+    // f: [2, -1], // force
+    onParticleUpdate: (ctx, particle) => {
+      ctx.beginPath();
+      ctx.rect(
+        particle.p.x,
+        particle.p.y,
+        particle.radius * 2,
+        particle.radius * 2
+      );
+      ctx.fillStyle = particle.color;
+      ctx.fill();
+      ctx.closePath();
+    },
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen  text-white">
@@ -64,12 +94,12 @@ const Home = () => {
           Program
         </ScrollLink>
       </nav>
-      <ParticlesBg type="circle" bg={true} color="0000FF" />
+      <ParticlesBg type="circle" bg={true} config={config} />
 
       <section id="home-section">
         <div className="flex flex-col items-center justify-center min-h-screen ">
           <h1 className="text-5xl font-bold">Deň PSK</h1>
-          <p className="mt-4 text-2xl">Zažite neopakovateľný zážitok......</p>
+          <p className="mt-4 text-2xl">5.5.2025</p>
           <form
             onSubmit={handleLogin}
             className="flex flex-col gap-4 p-6 rounded-lg shadow-lg w-80"
@@ -113,6 +143,7 @@ const Home = () => {
         </div>
       </section>
       {/* New Section (Below Login) */}
+
       <section
         id="info-section"
         className="h-screen flex flex-col items-center justify-center "
