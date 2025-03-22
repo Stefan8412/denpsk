@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import { useState, useEffect, useRef } from "react";
 import PowerModeInput from "power-mode-input";
+import QRCodeGenerator from "../components/QRCodegenerator";
 
 const Home = () => {
   const [email, setEmail] = useState("");
@@ -150,9 +151,11 @@ const Home = () => {
       >
         <h2 className="text-4xl font-bold text-black">Program</h2>
         <p className="text-lg mt-4 max-w-2xl text-center text-black">
-          <ul>
+          <ul className="list-disc">
+            <li>na webe sa pracuje, program doplníme</li>
             <li>Prehliadka úradu-nutná registrácia na webe</li>
             <li>Hlasovanie o školských projektoch-nutná registrácia na webe</li>
+            <QRCodeGenerator />
           </ul>
         </p>
       </section>
