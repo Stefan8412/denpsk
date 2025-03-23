@@ -289,14 +289,14 @@ const Dashboard = () => {
       </div>
       <section
         id="hlasovanie-section"
-        className="h-screen flex flex-col items-center justify-center bg-stone-700"
+        className="h-screen flex flex-col items-center justify-center bg-white"
       >
-        <h2 className="text-4xl font-bold text-white">Hlasovanie</h2>
+        <h2 className="text-4xl font-bold text-black">Hlasovanie</h2>
         {hasVoted ? (
-          <p className="text-xl text-white mt-4">Hlasoval si za: {userVote}</p>
+          <p className="text-xl text-black mt-4">Hlasoval si za: {userVote}</p>
         ) : (
           <>
-            <p className="text-lg mt-4 text-white">Vyber jednu z možností:</p>
+            <p className="text-lg mt-4 text-black">Vyber jednu z možností:</p>
             <div className="flex flex-wrap gap-4 mt-4">
               {options.map((option) => (
                 <button
@@ -321,10 +321,10 @@ const Dashboard = () => {
             </button>
           </>
         )}
-        <h3 className="text-2xl font-bold mt-6 text-white">Výsledky</h3>
+        <h3 className="text-2xl font-bold mt-6 text-black">Výsledky</h3>
         <ul className="mt-4">
           {Object.entries(voteCounts).map(([option, count]) => (
-            <li key={option} className="text-lg text-white">
+            <li key={option} className="text-lg text-black">
               {option}: {count} hlasov
             </li>
           ))}

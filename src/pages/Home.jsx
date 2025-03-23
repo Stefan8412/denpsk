@@ -77,7 +77,7 @@ const Home = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen  text-white">
       {/* Top Navigation Menu */}
-      <nav className="fixed top-0 left-0 w-full bg-black bg-opacity-30 p-4 flex justify-center z-50 space-x-6">
+      <nav className="fixed top-0 left-0 w-full bg-black bg-opacity-10 p-4 flex justify-center z-50 space-x-6">
         <ScrollLink
           to="home-section"
           smooth={true}
@@ -146,14 +146,17 @@ const Home = () => {
       </section>
       {/* New Section (Below Login) */}
 
-      <section id="info-section">
-        <div className="bg-neutral-900">
+      <section
+        id="info-section"
+        className="h-screen flex flex-col items-center justify-center bg-white"
+      >
+        <div className="bg-white">
           <div className="max-w-8xl px-4 xl:px-0 py-10 lg:pt-20 lg:pb-20 mx-auto">
             <div className="max-w-3xl mb-10 lg:mb-14">
-              <h2 className="text-white font-semibold text-2xl md:text-4xl md:leading-tight">
+              <h2 className="text-[#2629ab] px-10 font-semibold text-2xl md:text-4xl md:leading-tight">
                 Program
               </h2>
-              <p className="mt-1 text-neutral-400">
+              <p className="mt-1 px-10 text-neutral-800">
                 Bohatý program pre verejnosť 5.5.2025 na Námestí mieru 2, v
                 Prešove. Lorem impsum lorem ipsum lorem ipsum lorem ipsum Lorem
                 impsum lorem ipsum lorem ipsum lorem ipsum
@@ -164,14 +167,14 @@ const Home = () => {
               <div className="aspect-w-16 aspect-h-9 lg:aspect-none">
                 <img
                   className="w-full object-cover rounded-xl"
-                  src="https://images.unsplash.com/photo-1550850395-c17a8e90ad0a?q=80&w=480&h=350&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  src="erbbiely.jpg"
                   alt="Features Image"
                 />
               </div>
 
               <div>
                 <div className="mb-4">
-                  <h3 className="text-[#ff0] text-xs font-medium uppercase">
+                  <h3 className="text-[#2629ab] text-xs font-medium uppercase">
                     Aktivity
                   </h3>
                 </div>
@@ -179,15 +182,15 @@ const Home = () => {
                 <div className="flex gap-x-5 ms-1">
                   <div className="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-neutral-800">
                     <div className="relative z-10 size-8 flex justify-center items-center">
-                      <span className="flex shrink-0 justify-center items-center size-8 border border-neutral-800 text-[#ff0] font-semibold text-xs uppercase rounded-full">
+                      <span className="flex shrink-0 justify-center items-center size-8 border border-neutral-800 text-[#2629ab] font-semibold text-xs uppercase rounded-full">
                         1
                       </span>
                     </div>
                   </div>
 
                   <div className="grow pt-0.5 pb-8 sm:pb-12">
-                    <p className="text-sm lg:text-base text-neutral-400">
-                      <span className="text-white">Diskusie:</span>
+                    <p className="text-sm lg:text-base text-neutral-800">
+                      <span className="text-[#2629ab]">Diskusie:</span>
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                       Praesent non dolor interdum, scelerisque tortor in
                     </p>
@@ -197,15 +200,15 @@ const Home = () => {
                 <div className="flex gap-x-5 ms-1">
                   <div className="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-neutral-800">
                     <div className="relative z-10 size-8 flex justify-center items-center">
-                      <span className="flex shrink-0 justify-center items-center size-8 border border-neutral-800 text-[#ff0] font-semibold text-xs uppercase rounded-full">
+                      <span className="flex shrink-0 justify-center items-center size-8 border border-neutral-800 text-[#2629ab] font-semibold text-xs uppercase rounded-full">
                         2
                       </span>
                     </div>
                   </div>
 
                   <div className="grow pt-0.5 pb-8 sm:pb-12">
-                    <p className="text-sm lg:text-base text-neutral-400">
-                      <span className="text-white">Prehliadka:</span>
+                    <p className="text-sm lg:text-base text-neutral-800">
+                      <span className="text-[#2629ab]">Prehliadka:</span>
                       Registrácia na webe podujatia https://den.psk.sk
                     </p>
                   </div>
@@ -214,15 +217,15 @@ const Home = () => {
                 <div className="flex gap-x-5 ms-1">
                   <div className="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-neutral-800">
                     <div className="relative z-10 size-8 flex justify-center items-center">
-                      <span className="flex shrink-0 justify-center items-center size-8 border border-neutral-800 text-[#ff0] font-semibold text-xs uppercase rounded-full">
+                      <span className="flex shrink-0 justify-center items-center size-8 border border-neutral-800 text-[#2629ab] font-semibold text-xs uppercase rounded-full">
                         3
                       </span>
                     </div>
                   </div>
 
                   <div className="grow pt-0.5 pb-8 sm:pb-12">
-                    <p className="text-sm md:text-base text-neutral-400">
-                      <span className="text-white">Hlasovanie:</span>
+                    <p className="text-sm md:text-base text-neutral-800">
+                      <span className="text-[#2629ab]">Hlasovanie:</span>
                       Registrácia na webe podujatia https://den.psk.sk
                     </p>
                   </div>
@@ -231,15 +234,15 @@ const Home = () => {
                 <div className="flex gap-x-5 ms-1">
                   <div className="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-neutral-800">
                     <div className="relative z-10 size-8 flex justify-center items-center">
-                      <span className="flex shrink-0 justify-center items-center size-8 border border-neutral-800 text-[#ff0] font-semibold text-xs uppercase rounded-full">
+                      <span className="flex shrink-0 justify-center items-center size-8 border border-neutral-800 text-[#2629ab] font-semibold text-xs uppercase rounded-full">
                         4
                       </span>
                     </div>
                   </div>
 
                   <div className="grow pt-0.5 pb-8 sm:pb-12">
-                    <p className="text-sm md:text-base text-neutral-400">
-                      <span className="text-white">Bufety:</span>
+                    <p className="text-sm md:text-base text-neutral-800">
+                      <span className="text-[#2629ab]">Bufety:</span>
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                       Praesent non dolor interdum, scelerisque tortor in,.
                     </p>
@@ -247,7 +250,7 @@ const Home = () => {
                 </div>
 
                 <a
-                  className="group inline-flex items-center gap-x-2 py-2 px-3 bg-[#ff0] font-medium text-sm text-neutral-800 rounded-full focus:outline-hidden"
+                  className="group inline-flex items-center gap-x-2 py-2 px-3 text-[#2629ab] font-medium text-sm text-[#2629ab] rounded-full focus:outline-hidden"
                   href="#"
                 >
                   <svg
