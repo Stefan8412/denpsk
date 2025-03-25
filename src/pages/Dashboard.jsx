@@ -14,6 +14,7 @@ import {
 import ParticlesBg from "particles-bg";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
+import { Menu, X } from "lucide-react";
 
 const Dashboard = () => {
   const [timeSlots, setTimeSlots] = useState([]);
@@ -26,6 +27,7 @@ const Dashboard = () => {
   const [userVote, setUserVote] = useState(null);
   const [voteCounts, setVoteCounts] = useState({});
   const [hasVoted, setHasVoted] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const options = [
     "Projekt 1",
     "Projekt 2",
@@ -204,36 +206,54 @@ const Dashboard = () => {
   };
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <nav className="fixed top-0 left-0 w-full bg-black bg-opacity-30 p-4 flex justify-center items-center z-50 space-x-6">
-          <ScrollLink
-            to="prehliadka-section"
-            smooth={true}
-            duration={800}
-            className="text-white cursor-pointer hover:text-red-400 transition text-lg font-bold"
-          >
-            Prehliadka
-          </ScrollLink>
-
-          <ScrollLink
-            to="hlasovanie-section"
-            smooth={true}
-            duration={800}
-            className="text-white cursor-pointer hover:text-red-400 transition text-lg font-bold"
-          >
-            Hlasovanie
-          </ScrollLink>
-
+      <div className="flex flex-col min-h-screen  text-gray-900">
+        {/* Navigation */}
+        <nav className="fixed top-0 left-0 w-full bg-white shadow-md p-4 flex justify-between items-center z-50">
+          <div className="text-gray-900 font-bold text-lg">PSK</div>
           <button
-            onClick={handleLogout}
-            className="bg-red-500 text-white px-4 py-2 rounded-md"
+            className="md:hidden text-gray-900"
+            onClick={() => setMenuOpen(!menuOpen)}
           >
-            Odhlásiť
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
+          <div
+            className={`absolute md:static top-16 left-0 w-full md:w-auto bg-white md:bg-transparent md:flex ${
+              menuOpen ? "block" : "hidden"
+            }`}
+          >
+            <ScrollLink
+              to="prehliadka-section"
+              smooth={true}
+              duration={800}
+              className="block md:inline-block p-4 md:px-2 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
+            >
+              Prehliadka
+            </ScrollLink>
+            <ScrollLink
+              to="hlasovanie-section"
+              smooth={true}
+              duration={800}
+              className="block md:inline-block p-4 md:px-2 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
+            >
+              Hlasovanie
+            </ScrollLink>
+            <button
+              onClick={handleLogout}
+              className="block md:inline-block p-4 md:px-2 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
+            >
+              Logout
+            </button>
+          </div>
         </nav>
         <ParticlesBg type="circle" bg={true} config={config} />
-        <section id="prehliadka-section">
-          <div className="flex flex-col items-center justify-center min-h-screen ">
+        <section
+          id="prehliadka-section"
+          className="flex flex-col items-center justify-center min-h-screen p-6"
+        >
+          <h3 className="text-xl font-bold mt-16 text-white">Termíny</h3>
+          <div className="flex flex-col md:flex-row items-center justify-center min-h-screen p-3 ">
+            {/* Your content */}
+
             {isAdmin && (
               <div className="mt-6">
                 <h3 className="text-xl font-bold">Admin: Pridaj Termín</h3>
@@ -264,7 +284,6 @@ const Dashboard = () => {
               </div>
             )}
 
-            <h3 className="text-xl font-bold mt-6 text-white">Termíny</h3>
             {timeSlots.map((slot) => (
               <div key={slot.id} className="border p-2 m-2">
                 <p className="text-white">
@@ -289,46 +308,50 @@ const Dashboard = () => {
       </div>
       <section
         id="hlasovanie-section"
-        className="h-screen flex flex-col items-center justify-center bg-white"
+        className="min-h-screen flex flex-col items-center justify-center p-6 bg-white-500"
       >
-        <h2 className="text-4xl font-bold text-black">Hlasovanie</h2>
-        {hasVoted ? (
-          <p className="text-xl text-black mt-4">Hlasoval si za: {userVote}</p>
-        ) : (
-          <>
-            <p className="text-lg mt-4 text-black">Vyber jednu z možností:</p>
-            <div className="flex flex-wrap gap-4 mt-4">
-              {options.map((option) => (
-                <button
-                  key={option}
-                  onClick={() => setSelectedOption(option)}
-                  className={`px-6 py-3 rounded-md ${
-                    selectedOption === option
-                      ? "bg-blue-600 text-white"
-                      : "bg-sky-400 text-white"
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            <button
-              onClick={handleVote}
-              disabled={!selectedOption}
-              className="mt-4 bg-green-500 text-white px-6 py-3 rounded-md"
-            >
-              Hlasuj
-            </button>
-          </>
-        )}
-        <h3 className="text-2xl font-bold mt-6 text-black">Výsledky</h3>
-        <ul className="mt-4">
-          {Object.entries(voteCounts).map(([option, count]) => (
-            <li key={option} className="text-lg text-black">
-              {option}: {count} hlasov
-            </li>
-          ))}
-        </ul>
+        <div className="flex flex-col items-center justify-center min-h-screen p-3 ">
+          <h2 className="text-4xl font-bold text-black">Hlasovanie</h2>
+          {hasVoted ? (
+            <p className="text-xl text-black mt-4">
+              Hlasoval si za: {userVote}
+            </p>
+          ) : (
+            <>
+              <p className="text-lg mt-4 text-black">Vyber jednu z možností:</p>
+              <div className="flex flex-wrap gap-4 mt-4">
+                {options.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => setSelectedOption(option)}
+                    className={`px-6 py-3 rounded-md ${
+                      selectedOption === option
+                        ? "bg-blue-600 text-white"
+                        : "bg-sky-400 text-white"
+                    }`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={handleVote}
+                disabled={!selectedOption}
+                className="mt-4 bg-green-500 text-white px-6 py-3 rounded-md"
+              >
+                Hlasuj
+              </button>
+            </>
+          )}
+          <h3 className="text-2xl font-bold mt-6 text-black">Výsledky</h3>
+          <ul className="mt-4">
+            {Object.entries(voteCounts).map(([option, count]) => (
+              <li key={option} className="text-lg text-black">
+                {option}: {count} hlasov
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
     </>
   );

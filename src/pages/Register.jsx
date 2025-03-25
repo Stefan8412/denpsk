@@ -5,8 +5,10 @@ import { doc, setDoc } from "firebase/firestore";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import ParticlesBg from "particles-bg";
 import { Link as ScrollLink } from "react-scroll";
+import { Menu, X } from "lucide-react";
 
 const Register = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [organization, setOrganization] = useState("");
@@ -65,205 +67,101 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen  text-zinc-50">
-      <nav className="fixed top-0 left-0 w-full bg-black bg-opacity-30 p-4 flex justify-center z-50 space-x-6">
-        <ScrollLink
-          to="home-section"
-          smooth={true}
-          duration={800}
-          className="text-white cursor-pointer hover:text-red-400 transition text-lg font-bold"
+    <div className="flex flex-col min-h-screen  text-gray-900">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 w-full bg-white shadow-md p-4 flex justify-between items-center z-50">
+        <div className="text-gray-900 font-bold text-lg">PSK</div>
+        <button
+          className="md:hidden text-gray-900"
+          onClick={() => setMenuOpen(!menuOpen)}
         >
-          Domov
-        </ScrollLink>
-        <ScrollLink
-          to="info-section"
-          smooth={true}
-          duration={800}
-          className="text-white cursor-pointer hover:text-red-400 transition text-lg font-bold"
+          {menuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+        <div
+          className={`absolute md:static top-16 left-0 w-full md:w-auto bg-white md:bg-transparent md:flex ${
+            menuOpen ? "block" : "hidden"
+          }`}
         >
-          Program
-        </ScrollLink>
-      </nav>
-      <section id="home-section">
-        <ParticlesBg type="circle" bg={true} config={config} />
-        <div className="flex flex-col items-center justify-center min-h-screen ">
-          <h2 className="text-2xl font-bold">Registrácia</h2>
-          <form
-            className="flex flex-col gap-4 p-6 rounded-lg shadow-lg w-80"
-            onSubmit={handleRegister}
+          <ScrollLink
+            to="home-section"
+            smooth={true}
+            duration={800}
+            className="block md:inline-block p-4 md:p-2 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
           >
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="border p-2 rounded text-black"
-            />
-            <input
-              type="password"
-              placeholder="Heslo"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="border p-2 rounded text-black"
-            />
-            <input
-              type="text"
-              placeholder="Organizácia"
-              value={organization}
-              onChange={(e) => setOrganization(e.target.value)}
-              required
-              className="border p-2 rounded text-black"
-            />
-            <button type="submit" className="bg-blue-500 text-white p-2">
-              Registrácia
-            </button>
-          </form>
-          <p className="mt-4">
-            Máte účet?{" "}
-            <RouterLink to="/" className="text-red-400 hover:underline">
-              Prihláste sa
-            </RouterLink>
-          </p>
+            Domov
+          </ScrollLink>
+          <ScrollLink
+            to="program-section"
+            smooth={true}
+            duration={800}
+            className="block md:inline-block p-4 md:p-0 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
+          >
+            Program
+          </ScrollLink>
         </div>
+      </nav>
+      <ParticlesBg type="circle" config={config} bg={true} />
+      {/* Register Section */}
+      <section
+        id="home-section"
+        className="flex flex-col items-center justify-center min-h-screen p-6"
+      >
+        <h1 className="text-4xl font-bold text-blue-600">Registrácia</h1>
+        <form
+          onSubmit={handleRegister}
+          className="mt-6 bg-white p-6 rounded-lg shadow-md w-80"
+        >
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full border p-2 rounded mb-4"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full border p-2 rounded mb-4"
+          />
+          <input
+            type="text"
+            placeholder="Organization"
+            value={organization}
+            onChange={(e) => setOrganization(e.target.value)}
+            required
+            className="w-full border p-2 rounded mb-4"
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white p-2 rounded"
+          >
+            Registruj sa
+          </button>
+          <p className="mt-4 text-center">
+            Máš účet?{" "}
+            <span
+              className="text-blue-500 cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              Prihlás sa
+            </span>
+          </p>
+        </form>
       </section>
 
+      {/* Program Section */}
       <section
-        id="info-section"
-        className="h-screen flex flex-col items-center justify-center bg-white"
+        id="program-section"
+        className="min-h-screen flex flex-col items-center justify-center p-6 bg-white"
       >
-        <div className="bg-white">
-          <div className="max-w-8xl px-4 xl:px-0 py-10 lg:pt-20 lg:pb-20 mx-auto">
-            <div className="max-w-3xl mb-10 lg:mb-14">
-              <h2 className="text-[#2629ab] px-10 font-semibold text-2xl md:text-4xl md:leading-tight">
-                Program
-              </h2>
-              <p className="mt-1 px-10 text-neutral-800">
-                Bohatý program pre verejnosť 5.5.2025 na Námestí mieru 2, v
-                Prešove. Lorem impsum lorem ipsum lorem ipsum lorem ipsum Lorem
-                impsum lorem ipsum lorem ipsum lorem ipsum
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 lg:items-center">
-              <div className="aspect-w-16 aspect-h-9 lg:aspect-none">
-                <img
-                  className="w-full object-cover rounded-xl"
-                  src="erbbiely.jpg"
-                  alt="Features Image"
-                />
-              </div>
-
-              <div>
-                <div className="mb-4">
-                  <h3 className="text-[#2629ab] text-xs font-medium uppercase">
-                    Aktivity
-                  </h3>
-                </div>
-
-                <div className="flex gap-x-5 ms-1">
-                  <div className="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-neutral-800">
-                    <div className="relative z-10 size-8 flex justify-center items-center">
-                      <span className="flex shrink-0 justify-center items-center size-8 border border-neutral-800 text-[#2629ab] font-semibold text-xs uppercase rounded-full">
-                        1
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="grow pt-0.5 pb-8 sm:pb-12">
-                    <p className="text-sm lg:text-base text-neutral-800">
-                      <span className="text-[#2629ab]">Diskusie:</span>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Praesent non dolor interdum, scelerisque tortor in
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-x-5 ms-1">
-                  <div className="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-neutral-800">
-                    <div className="relative z-10 size-8 flex justify-center items-center">
-                      <span className="flex shrink-0 justify-center items-center size-8 border border-neutral-800 text-[#2629ab] font-semibold text-xs uppercase rounded-full">
-                        2
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="grow pt-0.5 pb-8 sm:pb-12">
-                    <p className="text-sm lg:text-base text-neutral-800">
-                      <span className="text-[#2629ab]">Prehliadka:</span>
-                      Registrácia na webe podujatia https://den.psk.sk
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-x-5 ms-1">
-                  <div className="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-neutral-800">
-                    <div className="relative z-10 size-8 flex justify-center items-center">
-                      <span className="flex shrink-0 justify-center items-center size-8 border border-neutral-800 text-[#2629ab] font-semibold text-xs uppercase rounded-full">
-                        3
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="grow pt-0.5 pb-8 sm:pb-12">
-                    <p className="text-sm md:text-base text-neutral-800">
-                      <span className="text-[#2629ab]">Hlasovanie:</span>
-                      Registrácia na webe podujatia https://den.psk.sk
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-x-5 ms-1">
-                  <div className="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-neutral-800">
-                    <div className="relative z-10 size-8 flex justify-center items-center">
-                      <span className="flex shrink-0 justify-center items-center size-8 border border-neutral-800 text-[#2629ab] font-semibold text-xs uppercase rounded-full">
-                        4
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="grow pt-0.5 pb-8 sm:pb-12">
-                    <p className="text-sm md:text-base text-neutral-800">
-                      <span className="text-[#2629ab]">Bufety:</span>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Praesent non dolor interdum, scelerisque tortor in,.
-                    </p>
-                  </div>
-                </div>
-
-                <a
-                  className="group inline-flex items-center gap-x-2 py-2 px-3 text-[#2629ab] font-medium text-sm text-[#2629ab] rounded-full focus:outline-hidden"
-                  href="#"
-                >
-                  <svg
-                    className="shrink-0 size-4"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                    <path
-                      className="opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-hover:delay-100 transition"
-                      d="M14.05 2a9 9 0 0 1 8 7.94"
-                    ></path>
-                    <path
-                      className="opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition"
-                      d="M14.05 6A5 5 0 0 1 18 10"
-                    ></path>
-                  </svg>
-                  090909009
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <h2 className="text-3xl font-bold text-blue-600">Program</h2>
+        <p className="mt-4 text-center text-gray-700 max-w-2xl">
+          5.5.2025 Deň PSK
+        </p>
       </section>
     </div>
   );
