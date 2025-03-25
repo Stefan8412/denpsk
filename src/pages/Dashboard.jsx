@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { auth, db } from "../firebaseConfig";
 import { signOut } from "firebase/auth";
+
 import {
   collection,
   addDoc,
@@ -28,6 +29,7 @@ const Dashboard = () => {
   const [voteCounts, setVoteCounts] = useState({});
   const [hasVoted, setHasVoted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const options = [
     "Projekt 1",
     "Projekt 2",
@@ -209,7 +211,12 @@ const Dashboard = () => {
       <div className="flex flex-col min-h-screen  text-gray-900">
         {/* Navigation */}
         <nav className="fixed top-0 left-0 w-full bg-white shadow-md p-4 flex justify-between items-center z-50">
-          <div className="text-gray-900 font-bold text-lg">PSK</div>
+          <div
+            className="text-gray-900 font-bold text-lg"
+            onClick={() => navigate("/")}
+          >
+            PSK
+          </div>
           <button
             className="md:hidden text-gray-900"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -222,24 +229,26 @@ const Dashboard = () => {
             }`}
           >
             <ScrollLink
+              onClick={() => setMenuOpen(false)}
               to="prehliadka-section"
               smooth={true}
               duration={800}
-              className="block md:inline-block p-4 md:px-2 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
+              className="block md:inline-block p-4 md:p-1 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
             >
               Prehliadka
             </ScrollLink>
             <ScrollLink
+              onClick={() => setMenuOpen(false)}
               to="hlasovanie-section"
               smooth={true}
               duration={800}
-              className="block md:inline-block p-4 md:px-2 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
+              className="block md:inline-block p-4 md:p-1 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
             >
               Hlasovanie
             </ScrollLink>
             <button
               onClick={handleLogout}
-              className="block md:inline-block p-4 md:px-2 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
+              className="block md:inline-block p-4 md:p-1 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
             >
               Logout
             </button>
@@ -250,8 +259,10 @@ const Dashboard = () => {
           id="prehliadka-section"
           className="flex flex-col items-center justify-center min-h-screen p-6"
         >
-          <h3 className="text-xl font-bold mt-16 text-white">Termíny</h3>
-          <div className="flex flex-col md:flex-row items-center justify-center min-h-screen p-3 ">
+          <h3 className="text-xl font-bold text-white md:mt-24 mt-20">
+            Termíny
+          </h3>
+          <div className="flex flex-col md:flex-row items-center justify-start min-h-screen p-3 ">
             {/* Your content */}
 
             {isAdmin && (

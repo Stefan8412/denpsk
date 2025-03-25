@@ -80,7 +80,12 @@ const Home = () => {
     <div className="flex flex-col min-h-screen  text-gray-900">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 w-full bg-white shadow-md p-4 flex justify-between items-center z-50">
-        <div className="text-gray-900 font-bold text-lg">PSK</div>
+        <div
+          className="text-gray-900 font-bold text-lg"
+          onClick={() => navigate("/")}
+        >
+          PSK
+        </div>
         <button
           className="md:hidden text-gray-900"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -93,18 +98,20 @@ const Home = () => {
           }`}
         >
           <ScrollLink
+            onClick={() => setMenuOpen(false)}
             to="home-section"
             smooth={true}
             duration={800}
-            className="block md:inline-block p-4 md:px-2 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
+            className="block md:inline-block p-4 md:p-1 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
           >
             Domov
           </ScrollLink>
           <ScrollLink
+            onClick={() => setMenuOpen(false)}
             to="program-section"
             smooth={true}
             duration={800}
-            className="block md:inline-block p-4 md:px-2 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
+            className="block md:inline-block p-4 md:p-1 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
           >
             Program
           </ScrollLink>
