@@ -7,6 +7,7 @@ import ParticlesBg from "particles-bg";
 import { Link as ScrollLink } from "react-scroll";
 import { Menu, X } from "lucide-react";
 import QRCodeGenerator from "../components/QRCodegenerator";
+import CountdownTimer from "../components/CountdownTimer";
 
 const Register = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -176,9 +177,7 @@ const Register = () => {
         className="min-h-screen flex flex-col items-center justify-center p-6 bg-white"
       >
         <h2 className="text-3xl font-bold text-blue-600">Program</h2>
-        <p className="mt-4 text-center text-gray-700 max-w-2xl">
-          5.5.2025 Deň PSK
-        </p>
+        <CountdownTimer />
       </section>
       <section
         id="qr-section"

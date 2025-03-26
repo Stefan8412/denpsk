@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import PowerModeInput from "power-mode-input";
 import QRCodeGenerator from "../components/QRCodegenerator";
 import { Menu, X } from "lucide-react";
+import CountdownTimer from "../components/CountdownTimer";
 
 const Home = () => {
   const [email, setEmail] = useState("");
@@ -178,9 +179,7 @@ const Home = () => {
         className="min-h-screen flex flex-col items-center justify-center p-6 bg-white"
       >
         <h2 className="text-3xl font-bold text-blue-600">Program</h2>
-        <p className="mt-4 text-center text-gray-700 max-w-2xl">
-          5.5.2025 Deň PSK
-        </p>
+        <CountdownTimer />
       </section>
       <section
         id="qr-section"
