@@ -2,7 +2,7 @@ import { useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 
 const QRCodeGenerator = () => {
-  const votingPageURL = "https://den.psk.sk/register"; // Change to your actual voting page URL
+  const votingPageURL = "https://den.psk.sk"; // Change to your actual voting page URL
   const [qrValue, setQrValue] = useState(votingPageURL);
 
   return (
