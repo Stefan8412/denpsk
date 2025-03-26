@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { auth, db } from "../firebaseConfig";
-import { signOut } from "firebase/auth";
+import { db } from "../firebaseConfig";
 
 import {
   collection,
@@ -8,7 +7,6 @@ import {
   getDocs,
   updateDoc,
   doc,
-  arrayUnion,
   getDoc,
   setDoc,
 } from "firebase/firestore";
@@ -18,182 +16,54 @@ import { Link as ScrollLink } from "react-scroll";
 import { Menu, X } from "lucide-react";
 
 const Dashboard = () => {
-  const [timeSlots, setTimeSlots] = useState([]);
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [maxCapacity, setMaxCapacity] = useState(5);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [userVote, setUserVote] = useState(null);
-  const [voteCounts, setVoteCounts] = useState({});
+  const [userName, setUserName] = useState("");
   const [hasVoted, setHasVoted] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedVote, setSelectedVote] = useState(null);
   const navigate = useNavigate();
-  const [showResults, setShowResults] = useState(false);
-  const options = [
-    "Projekt 1",
-    "Projekt 2",
-    "Projekt 3",
-    "Projekt 4",
-    "Projekt 5",
-  ];
+  const userId = localStorage.getItem("userId");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    if (auth.currentUser) {
-      checkUserVote(auth.currentUser.uid);
+    if (!userId) {
+      navigate("/");
+      return;
     }
-    fetchVoteCounts();
-  }, []);
-  // Check if user has already voted
-  const checkUserVote = async (userId) => {
-    const userVoteRef = doc(db, "votes", userId);
-    const userVoteSnap = await getDoc(userVoteRef);
-    if (userVoteSnap.exists()) {
-      setUserVote(userVoteSnap.data().option);
-      setHasVoted(true);
-    }
-  };
+    const fetchUser = async () => {
+      const userDoc = await getDoc(doc(db, "hlasovanieusers", userId));
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        setUserName(userData.name);
+        setHasVoted(userData.hasVoted);
+      } else {
+        localStorage.removeItem("userId");
+        navigate("/");
+      }
+    };
 
-  // Fetch vote counts
-  const fetchVoteCounts = async () => {
-    const votesRef = doc(db, "voteCounts", "results");
-    const votesSnap = await getDoc(votesRef);
-    if (votesSnap.exists()) {
-      setVoteCounts(votesSnap.data());
-      setShowResults(true);
-    } else {
-      setVoteCounts({
-        "Projekt 1": 0,
-        "Projekt 2": 0,
-        "Projekt 3": 0,
-        "Projekt 4": 0,
-        "Projekt 5": 0,
-      });
-      // Show results only after clicking the button
-    }
-  };
+    fetchUser();
+  }, [userId, navigate]);
 
-  // Handle voting
   const handleVote = async () => {
-    const user = auth.currentUser; // Get current user
-    if (!user) {
-      alert("You must be logged in to vote.");
-      return;
-    }
-    if (!auth.currentUser) return alert("You need to be logged in to vote.");
-    if (hasVoted) return alert("You have already voted.");
+    if (!selectedVote) return alert("Prosím najprv hlasuj za 1 projekt.");
+    if (hasVoted) return alert("Už si hlasoval.");
 
-    const userId = auth.currentUser.uid;
-    const userVoteRef = doc(db, "votes", userId);
-    await setDoc(userVoteRef, { option: selectedOption, email: user.email });
-
-    const votesRef = doc(db, "voteCounts", "results");
-    const votesSnap = await getDoc(votesRef);
-    let updatedCounts = votesSnap.exists() ? votesSnap.data() : {};
-
-    updatedCounts[selectedOption] = (updatedCounts[selectedOption] || 0) + 1;
-
-    await setDoc(votesRef, updatedCounts);
-    setVoteCounts(updatedCounts);
-    setUserVote(selectedOption);
-    setHasVoted(true);
-  };
-
-  const fetchTimeSlots = async () => {
-    const snapshot = await getDocs(collection(db, "timeSlots"));
-    setTimeSlots(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-  };
-
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      if (auth.currentUser) {
-        const userRef = doc(db, "users", auth.currentUser.uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          setIsAdmin(userSnap.data().role === "admin");
-        }
-        setCurrentUser(auth.currentUser.email);
-      }
-    };
-
-    const fetchTimeSlots = async () => {
-      const snapshot = await getDocs(collection(db, "timeSlots"));
-      setTimeSlots(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-    };
-
-    fetchUserRole();
-    fetchTimeSlots();
-  }, []);
-
-  const addTimeSlot = async () => {
-    await addDoc(collection(db, "timeSlots"), {
-      date,
-      time,
-      maxCapacity,
-      bookedUsers: [],
-    });
-    setDate("");
-    setTime("");
-    setMaxCapacity(5);
-    await fetchTimeSlots(); // Refresh list
-  };
-
-  const bookTimeSlot = async (slotId) => {
-    if (!currentUser) return alert("You need to be logged in to book a slot.");
-
-    // Fetch all time slots to check if the user has already booked one
-    const snapshot = await getDocs(collection(db, "timeSlots"));
-    const userAlreadyBooked = snapshot.docs.some((doc) => {
-      const data = doc.data();
-      return (
-        Array.isArray(data.bookedUsers) &&
-        data.bookedUsers.includes(currentUser)
-      );
-    });
-
-    if (userAlreadyBooked) {
-      alert("Môžte sa prihlásiť iba na jeden termín.");
-      return;
-    }
-
-    // Proceed with booking the selected slot
-    const slotRef = doc(db, "timeSlots", slotId);
-    const slotSnap = await getDoc(slotRef);
-
-    if (slotSnap.exists()) {
-      const slotData = slotSnap.data();
-
-      if (
-        Array.isArray(slotData.bookedUsers) &&
-        slotData.bookedUsers.includes(currentUser)
-      ) {
-        alert("Môžte sa prihlásiť iba na jeden termín.");
-        return;
-      }
-
-      if (slotData.bookedUsers.length >= slotData.maxCapacity) {
-        alert("Tento slot je plný.");
-        return;
-      }
-
-      await updateDoc(slotRef, {
-        bookedUsers: arrayUnion(currentUser),
+    try {
+      await updateDoc(doc(db, "hlasovanieusers", userId), {
+        vote: selectedVote,
+        hasVoted: true, // Prevents multiple votes
       });
 
-      // Update UI
-      setTimeSlots((prevSlots) =>
-        prevSlots.map((slot) =>
-          slot.id === slotId
-            ? { ...slot, bookedUsers: [...slot.bookedUsers, currentUser] }
-            : slot
-        )
-      );
+      alert("Hlas zaznamenaný!");
+      setHasVoted(true);
+    } catch (error) {
+      console.error("Error voting:", error);
     }
   };
 
   const handleLogout = async () => {
-    await signOut(auth);
+    localStorage.removeItem("userId");
+    localStorage.removeItem("role");
+    navigate("/"); // Redirect to registration form
   };
   let config = {
     num: [4, 7],
@@ -236,6 +106,7 @@ const Dashboard = () => {
             className="h-16 cursor-pointer"
             onClick={() => navigate("/")}
           />
+
           <button
             className="md:hidden text-gray-900"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -248,16 +119,6 @@ const Dashboard = () => {
             }`}
           >
             <ScrollLink
-              onClick={() => setMenuOpen(false)}
-              to="prehliadka-section"
-              smooth={true}
-              duration={800}
-              className="block md:inline-block p-4 md:p-1 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
-            >
-              Prehliadka
-            </ScrollLink>
-            <ScrollLink
-              onClick={() => setMenuOpen(false)}
               to="hlasovanie-section"
               smooth={true}
               duration={800}
@@ -273,139 +134,81 @@ const Dashboard = () => {
             </button>
           </div>
         </nav>
-        <ParticlesBg type="circle" bg={true} config={config} />
+
         <section
-          id="prehliadka-section"
-          className="flex flex-col items-center justify-center min-h-screen p-6"
+          id="hlasovanie-section"
+          className="min-h-screen flex flex-col items-center justify-center p-6 mt-4 "
         >
-          <h3 className="text-2xl font-bold text-blue-600 md:mt-24 mt-20">
-            Termíny
-          </h3>
-          <div className="flex flex-col md:flex-row items-center justify-start min-h-screen p-3 ">
-            {/* Your content */}
-            <div className="flex flex-col">
-              {isAdmin && (
-                <div className="mt-0">
-                  <input
-                    type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    className="border p-2"
-                  />
-                  <input
-                    type="time"
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                    className="border p-2"
-                  />
-                  <input
-                    type="number"
-                    value={maxCapacity}
-                    onChange={(e) => setMaxCapacity(e.target.value)}
-                    className="border p-2"
-                  />
-                  <button
-                    onClick={addTimeSlot}
-                    className="bg-green-500 text-white p-2"
-                  >
-                    Nový termín
-                  </button>
-                </div>
-              )}
-
-              {timeSlots.map((slot) => {
-                const isBookedByUser = slot.bookedUsers.includes(currentUser);
-
-                return (
-                  <div key={slot.id} className="border p-2 m-2">
-                    <p className="text-white">
-                      {slot.date} v čase o {slot.time} (Kapacita:{" "}
-                      {slot.bookedUsers.length}/{slot.maxCapacity})
-                    </p>
-                    {!isAdmin && (
-                      <button
-                        onClick={() => bookTimeSlot(slot.id)}
-                        className={`p-2 mt-2 rounded-md ${
-                          isBookedByUser
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-blue-500 hover:bg-blue-700"
-                        } text-white`}
-                        disabled={isBookedByUser}
-                      >
-                        {isBookedByUser ? "Rezervované" : "Rezervuj"}
-                      </button>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      </div>
-      <section
-        id="hlasovanie-section"
-        className="min-h-screen flex flex-col items-center justify-center p-6 bg-white-500"
-      >
-        <div className="flex flex-col items-center justify-center min-h-screen p-3 ">
           <h2 className="text-4xl font-bold text-blue-600">Hlasovanie</h2>
           {hasVoted ? (
-            <p className="text-xl text-black mt-4">
-              Hlasoval si za: {userVote}
-            </p>
+            <p className="text-lg text-green-500">Už si hlasoval.</p>
           ) : (
             <>
-              <p className="text-lg mt-4 text-black">Vyber jednu z možností:</p>
-              <div className="flex flex-wrap gap-4 mt-4">
-                {options.map((option) => (
-                  <button
-                    key={option}
-                    onClick={() => setSelectedOption(option)}
-                    className={`px-6 py-3 rounded-md ${
-                      selectedOption === option
-                        ? "bg-blue-600 text-white"
-                        : "bg-sky-400 text-white"
-                    }`}
-                  >
-                    {option}
-                  </button>
-                ))}
+              <p className="text-lg">Označ projekt a stlač hlasuj:</p>
+              <div className="mt-4 flex flex-col gap-4">
+                <button
+                  onClick={() => setSelectedVote("Projekt 1")}
+                  className={`p-2 w-full rounded-md ${
+                    selectedVote === "Projekt 1"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-300"
+                  }`}
+                >
+                  Projekt 1
+                </button>
+                <button
+                  onClick={() => setSelectedVote("Projekt 2")}
+                  className={`p-2 w-full rounded-md ${
+                    selectedVote === "Projekt 2"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-300"
+                  }`}
+                >
+                  Projekt 2
+                </button>
+                <button
+                  onClick={() => setSelectedVote("Projekt 3")}
+                  className={`p-2 w-full rounded-md ${
+                    selectedVote === "Projekt 3"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-300"
+                  }`}
+                >
+                  Projekt 3
+                </button>
+                <button
+                  onClick={() => setSelectedVote("Projekt 4")}
+                  className={`p-2 w-full rounded-md ${
+                    selectedVote === "Projekt 4"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-300"
+                  }`}
+                >
+                  Projekt 4
+                </button>
+                <button
+                  onClick={() => setSelectedVote("Projekt 5")}
+                  className={`p-2 w-full rounded-md ${
+                    selectedVote === "Projekt 5"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-300"
+                  }`}
+                >
+                  Projekt 5
+                </button>
               </div>
+
               <button
                 onClick={handleVote}
-                disabled={!selectedOption}
-                className="mt-4 bg-green-500 text-white px-6 py-3 rounded-md"
+                disabled={hasVoted}
+                className="w-full bg-green-500 text-white p-2 rounded-md mt-4"
               >
                 Hlasuj
               </button>
             </>
           )}
-          {/* Show Results Button for Admin */}
-          {isAdmin && !showResults && (
-            <button
-              onClick={fetchVoteCounts}
-              className="mt-6 bg-red-500 text-white px-6 py-3 rounded-md"
-            >
-              Zobraziť Výsledky
-            </button>
-          )}
-
-          {/* Display results only when admin clicks the button */}
-          {isAdmin && showResults && (
-            <>
-              <h3 className="text-2xl font-bold mt-6 text-blue-600">
-                Výsledky
-              </h3>
-              <ul className="mt-4">
-                {Object.entries(voteCounts).map(([option, count]) => (
-                  <li key={option} className="text-lg text-black">
-                    {option}: {count} hlasov
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-        </div>
-      </section>
+        </section>
+      </div>
     </>
   );
 };

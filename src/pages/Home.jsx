@@ -1,30 +1,51 @@
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import ParticlesBg from "particles-bg";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+
 import { useState, useEffect, useRef } from "react";
 import PowerModeInput from "power-mode-input";
 import QRCodeGenerator from "../components/QRCodegenerator";
 import { Menu, X } from "lucide-react";
 import CountdownTimer from "../components/CountdownTimer";
+import { db } from "../firebaseConfig";
+
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { addDoc } from "firebase/firestore";
 
 const Home = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+
   const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/dashboard"); // Redirect after successful login
-    } catch (err) {
-      setError("Nesprávny email alebo heslo"); // Show error message
+    if (!name) {
+      alert("Please enter your name.");
+      return;
+    }
+    // Check if name exists in Firestore
+    const q = query(
+      collection(db, "hlasovanieusers"),
+      where("name", "==", name)
+    );
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
+      setError("Hlasovanie bude spustené 5.5.2025");
+    } else {
+      const userDoc = querySnapshot.docs[0];
+      const userData = userDoc.data();
+
+      localStorage.setItem("userId", userDoc.id);
+      localStorage.setItem("role", userData.role || "user");
+      if (userData.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     }
   };
+
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -140,36 +161,19 @@ const Home = () => {
           className="mt-6 bg-white p-6 rounded-lg shadow-md w-80"
         >
           <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full border p-2 rounded mb-4"
+            type="text"
+            placeholder="napíšte meno"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full p-2 border rounded-md"
           />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full border p-2 rounded mb-4"
-          />
+          {error && <p className="text-red-500">{error}</p>}
           <button
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-900"
           >
             Prihlásiť sa
           </button>
-          <p className="mt-4 text-center">
-            Nemáš účet?{" "}
-            <span
-              className="text-blue-500 cursor-pointer "
-              onClick={() => navigate("/register")}
-            >
-              Registruj sa
-            </span>
-          </p>
         </form>
       </section>
 
