@@ -150,7 +150,7 @@ const Dashboard = () => {
     });
 
     if (userAlreadyBooked) {
-      alert("You have already booked a time slot.");
+      alert("Môžte sa prihlásiť iba na jeden termín.");
       return;
     }
 
