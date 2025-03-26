@@ -275,7 +275,7 @@ const Dashboard = () => {
           id="prehliadka-section"
           className="flex flex-col items-center justify-center min-h-screen p-6"
         >
-          <h3 className="text-xl font-bold text-white md:mt-24 mt-20">
+          <h3 className="text-2xl font-bold text-blue-600 md:mt-24 mt-20">
             Termíny
           </h3>
           <div className="flex flex-col md:flex-row items-center justify-start min-h-screen p-3 ">
@@ -344,7 +344,7 @@ const Dashboard = () => {
         className="min-h-screen flex flex-col items-center justify-center p-6 bg-white-500"
       >
         <div className="flex flex-col items-center justify-center min-h-screen p-3 ">
-          <h2 className="text-4xl font-bold text-black">Hlasovanie</h2>
+          <h2 className="text-4xl font-bold text-blue-600">Hlasovanie</h2>
           {hasVoted ? (
             <p className="text-xl text-black mt-4">
               Hlasoval si za: {userVote}
@@ -376,7 +376,7 @@ const Dashboard = () => {
               </button>
             </>
           )}
-          <h3 className="text-2xl font-bold mt-6 text-black">Výsledky</h3>
+          <h3 className="text-2xl font-bold mt-6 text-blue-600">Výsledky</h3>
           <ul className="mt-4">
             {Object.entries(voteCounts).map(([option, count]) => (
               <li key={option} className="text-lg text-black">

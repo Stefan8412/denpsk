@@ -154,7 +154,7 @@ const Register = () => {
               className="text-blue-500 cursor-pointer"
               onClick={() => navigate("/")}
             >
-              Prihlás sa
+              Prihlásiť sa
             </span>
           </p>
         </form>
