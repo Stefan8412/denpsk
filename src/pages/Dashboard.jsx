@@ -137,32 +137,48 @@ const Dashboard = () => {
   };
 
   const bookTimeSlot = async (slotId) => {
-    if (!currentUser) return;
+    if (!currentUser) return alert("You need to be logged in to book a slot.");
 
+    // Fetch all time slots to check if the user has already booked one
+    const snapshot = await getDocs(collection(db, "timeSlots"));
+    const userAlreadyBooked = snapshot.docs.some((doc) => {
+      const data = doc.data();
+      return (
+        Array.isArray(data.bookedUsers) &&
+        data.bookedUsers.includes(currentUser)
+      );
+    });
+
+    if (userAlreadyBooked) {
+      alert("You have already booked a time slot.");
+      return;
+    }
+
+    // Proceed with booking the selected slot
     const slotRef = doc(db, "timeSlots", slotId);
     const slotSnap = await getDoc(slotRef);
 
     if (slotSnap.exists()) {
       const slotData = slotSnap.data();
 
-      // Check if user is already booked
-      if (slotData.bookedUsers.includes(currentUser)) {
-        alert("Uz ste sa prihlásili na tento termín.");
+      if (
+        Array.isArray(slotData.bookedUsers) &&
+        slotData.bookedUsers.includes(currentUser)
+      ) {
+        alert("Môžte sa prihlásiť iba na jeden termín.");
         return;
       }
 
-      // Check if slot is full
       if (slotData.bookedUsers.length >= slotData.maxCapacity) {
-        alert("Tento termín je plný");
+        alert("Tento slot je plný.");
         return;
       }
 
-      // Update Firestore
       await updateDoc(slotRef, {
         bookedUsers: arrayUnion(currentUser),
       });
 
-      // 🔹 Immediately update the UI
+      // Update UI
       setTimeSlots((prevSlots) =>
         prevSlots.map((slot) =>
           slot.id === slotId
@@ -295,25 +311,31 @@ const Dashboard = () => {
               </div>
             )}
 
-            {timeSlots.map((slot) => (
-              <div key={slot.id} className="border p-2 m-2">
-                <p className="text-white">
-                  {slot.date} v čase o {slot.time} (Kapacita:{" "}
-                  {slot.bookedUsers.length}/{slot.maxCapacity})
-                </p>
-                {!isAdmin && (
-                  <button
-                    onClick={() => bookTimeSlot(slot.id)}
-                    className="bg-blue-500 text-white p-2 mt-2"
-                    disabled={slot.bookedUsers.length >= slot.maxCapacity}
-                  >
-                    {slot.bookedUsers.length >= slot.maxCapacity
-                      ? "Plný"
-                      : "Rezervuj"}
-                  </button>
-                )}
-              </div>
-            ))}
+            {timeSlots.map((slot) => {
+              const isBookedByUser = slot.bookedUsers.includes(currentUser);
+
+              return (
+                <div key={slot.id} className="border p-2 m-2">
+                  <p className="text-white">
+                    {slot.date} v čase o {slot.time} (Kapacita:{" "}
+                    {slot.bookedUsers.length}/{slot.maxCapacity})
+                  </p>
+                  {!isAdmin && (
+                    <button
+                      onClick={() => bookTimeSlot(slot.id)}
+                      className={`p-2 mt-2 rounded-md ${
+                        isBookedByUser
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : "bg-blue-500 hover:bg-blue-700"
+                      } text-white`}
+                      disabled={isBookedByUser}
+                    >
+                      {isBookedByUser ? "Rezervované" : "Rezervuj"}
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </section>
       </div>
