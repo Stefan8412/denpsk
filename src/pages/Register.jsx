@@ -6,6 +6,7 @@ import { useNavigate, Link as RouterLink } from "react-router-dom";
 import ParticlesBg from "particles-bg";
 import { Link as ScrollLink } from "react-scroll";
 import { Menu, X } from "lucide-react";
+import QRCodeGenerator from "../components/QRCodegenerator";
 
 const Register = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -105,6 +106,15 @@ const Register = () => {
           >
             Program
           </ScrollLink>
+          <ScrollLink
+            onClick={() => setMenuOpen(false)}
+            to="qr-section"
+            smooth={true}
+            duration={800}
+            className="block md:inline-block p-4 md:p-1 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
+          >
+            QR
+          </ScrollLink>
         </div>
       </nav>
       <ParticlesBg type="circle" config={config} bg={true} />
@@ -168,6 +178,15 @@ const Register = () => {
         <h2 className="text-3xl font-bold text-blue-600">Program</h2>
         <p className="mt-4 text-center text-gray-700 max-w-2xl">
           5.5.2025 Deň PSK
+        </p>
+      </section>
+      <section
+        id="qr-section"
+        className="min-h-screen flex flex-col items-center justify-center p-6 bg-white"
+      >
+        <h2 className="text-3xl font-bold text-blue-600">5.5.2025</h2>
+        <p className="mt-4 text-center text-gray-700 max-w-2xl">
+          <QRCodeGenerator />
         </p>
       </section>
     </div>

@@ -186,7 +186,7 @@ const Home = () => {
         id="qr-section"
         className="min-h-screen flex flex-col items-center justify-center p-6 bg-white"
       >
-        <h2 className="text-3xl font-bold text-blue-600">QR code</h2>
+        <h2 className="text-3xl font-bold text-blue-600">5.5.2025</h2>
         <p className="mt-4 text-center text-gray-700 max-w-2xl">
           <QRCodeGenerator />
         </p>
