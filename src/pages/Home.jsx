@@ -80,12 +80,12 @@ const Home = () => {
     <div className="flex flex-col min-h-screen  text-gray-900">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 w-full bg-white shadow-md p-4 flex justify-between items-center z-50">
-        <div
-          className="text-gray-900 font-bold text-lg"
+        <img
+          src="/erbbiely.jpg"
+          alt="PSK Logo"
+          className="h-16 cursor-pointer"
           onClick={() => navigate("/")}
-        >
-          PSK
-        </div>
+        />
         <button
           className="md:hidden text-gray-900"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -156,14 +156,14 @@ const Home = () => {
           />
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded"
+            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-900"
           >
             Prihlás sa
           </button>
           <p className="mt-4 text-center">
             Nemáš účet?{" "}
             <span
-              className="text-blue-500 cursor-pointer"
+              className="text-blue-500 cursor-pointer "
               onClick={() => navigate("/register")}
             >
               Registruj sa

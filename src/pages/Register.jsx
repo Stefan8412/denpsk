@@ -70,12 +70,12 @@ const Register = () => {
     <div className="flex flex-col min-h-screen  text-gray-900">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 w-full bg-white shadow-md p-4 flex justify-between items-center z-50">
-        <div
-          className="text-gray-900 font-bold text-lg"
+        <img
+          src="/erbbiely.jpg"
+          alt="PSK Logo"
+          className="h-16 cursor-pointer"
           onClick={() => navigate("/")}
-        >
-          PSK
-        </div>
+        />
         <button
           className="md:hidden text-gray-900"
           onClick={() => setMenuOpen(!menuOpen)}
