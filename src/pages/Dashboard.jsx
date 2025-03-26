@@ -30,6 +30,7 @@ const Dashboard = () => {
   const [hasVoted, setHasVoted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const [showResults, setShowResults] = useState(false);
   const options = [
     "Projekt 1",
     "Projekt 2",
@@ -60,6 +61,7 @@ const Dashboard = () => {
     const votesSnap = await getDoc(votesRef);
     if (votesSnap.exists()) {
       setVoteCounts(votesSnap.data());
+      setShowResults(true);
     } else {
       setVoteCounts({
         "Projekt 1": 0,
@@ -68,6 +70,7 @@ const Dashboard = () => {
         "Projekt 4": 0,
         "Projekt 5": 0,
       });
+      // Show results only after clicking the button
     }
   };
 
@@ -280,62 +283,62 @@ const Dashboard = () => {
           </h3>
           <div className="flex flex-col md:flex-row items-center justify-start min-h-screen p-3 ">
             {/* Your content */}
-
-            {isAdmin && (
-              <div className="mt-6">
-                <h3 className="text-xl font-bold">Admin: Pridaj Termín</h3>
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="border p-2"
-                />
-                <input
-                  type="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  className="border p-2"
-                />
-                <input
-                  type="number"
-                  value={maxCapacity}
-                  onChange={(e) => setMaxCapacity(e.target.value)}
-                  className="border p-2"
-                />
-                <button
-                  onClick={addTimeSlot}
-                  className="bg-green-500 text-white p-2"
-                >
-                  Nový termín
-                </button>
-              </div>
-            )}
-
-            {timeSlots.map((slot) => {
-              const isBookedByUser = slot.bookedUsers.includes(currentUser);
-
-              return (
-                <div key={slot.id} className="border p-2 m-2">
-                  <p className="text-white">
-                    {slot.date} v čase o {slot.time} (Kapacita:{" "}
-                    {slot.bookedUsers.length}/{slot.maxCapacity})
-                  </p>
-                  {!isAdmin && (
-                    <button
-                      onClick={() => bookTimeSlot(slot.id)}
-                      className={`p-2 mt-2 rounded-md ${
-                        isBookedByUser
-                          ? "bg-gray-400 cursor-not-allowed"
-                          : "bg-blue-500 hover:bg-blue-700"
-                      } text-white`}
-                      disabled={isBookedByUser}
-                    >
-                      {isBookedByUser ? "Rezervované" : "Rezervuj"}
-                    </button>
-                  )}
+            <div className="flex flex-col">
+              {isAdmin && (
+                <div className="mt-0">
+                  <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="border p-2"
+                  />
+                  <input
+                    type="time"
+                    value={time}
+                    onChange={(e) => setTime(e.target.value)}
+                    className="border p-2"
+                  />
+                  <input
+                    type="number"
+                    value={maxCapacity}
+                    onChange={(e) => setMaxCapacity(e.target.value)}
+                    className="border p-2"
+                  />
+                  <button
+                    onClick={addTimeSlot}
+                    className="bg-green-500 text-white p-2"
+                  >
+                    Nový termín
+                  </button>
                 </div>
-              );
-            })}
+              )}
+
+              {timeSlots.map((slot) => {
+                const isBookedByUser = slot.bookedUsers.includes(currentUser);
+
+                return (
+                  <div key={slot.id} className="border p-2 m-2">
+                    <p className="text-white">
+                      {slot.date} v čase o {slot.time} (Kapacita:{" "}
+                      {slot.bookedUsers.length}/{slot.maxCapacity})
+                    </p>
+                    {!isAdmin && (
+                      <button
+                        onClick={() => bookTimeSlot(slot.id)}
+                        className={`p-2 mt-2 rounded-md ${
+                          isBookedByUser
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-blue-500 hover:bg-blue-700"
+                        } text-white`}
+                        disabled={isBookedByUser}
+                      >
+                        {isBookedByUser ? "Rezervované" : "Rezervuj"}
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </section>
       </div>
@@ -376,14 +379,31 @@ const Dashboard = () => {
               </button>
             </>
           )}
-          <h3 className="text-2xl font-bold mt-6 text-blue-600">Výsledky</h3>
-          <ul className="mt-4">
-            {Object.entries(voteCounts).map(([option, count]) => (
-              <li key={option} className="text-lg text-black">
-                {option}: {count} hlasov
-              </li>
-            ))}
-          </ul>
+          {/* Show Results Button for Admin */}
+          {isAdmin && !showResults && (
+            <button
+              onClick={fetchVoteCounts}
+              className="mt-6 bg-red-500 text-white px-6 py-3 rounded-md"
+            >
+              Zobraziť Výsledky
+            </button>
+          )}
+
+          {/* Display results only when admin clicks the button */}
+          {isAdmin && showResults && (
+            <>
+              <h3 className="text-2xl font-bold mt-6 text-blue-600">
+                Výsledky
+              </h3>
+              <ul className="mt-4">
+                {Object.entries(voteCounts).map(([option, count]) => (
+                  <li key={option} className="text-lg text-black">
+                    {option}: {count} hlasov
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </section>
     </>
