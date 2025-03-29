@@ -170,7 +170,7 @@ const Home = () => {
           {error && <p className="text-red-500">{error}</p>}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-900"
+            className="w-full bg-blue-500 text-white p-2 mt-2 rounded hover:bg-blue-900"
           >
             Prihlásiť sa
           </button>
@@ -182,8 +182,13 @@ const Home = () => {
         id="program-section"
         className="min-h-screen flex flex-col items-center justify-center p-6 bg-white"
       >
-        <h2 className="text-3xl font-bold text-blue-600">Program</h2>
-        <CountdownTimer />
+        {/* Event Cover Image */}
+        <img
+          src="/program.png" // Update with your actual image path
+          alt="Event Cover"
+          className="w-full max-w-4xl h-auto object-cover rounded-lg shadow-lg
+               sm:max-w-3xl md:max-w-2xl lg:max-w-full"
+        />
       </section>
       <section
         id="qr-section"
