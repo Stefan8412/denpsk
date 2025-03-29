@@ -147,61 +147,68 @@ const Dashboard = () => {
               <p className="text-lg">Označ projekt a stlač hlasuj:</p>
               <div className="mt-4 flex flex-col gap-4">
                 <button
-                  onClick={() => setSelectedVote("Projekt 1")}
+                  onClick={() => setSelectedVote("V skole ako doma")}
                   className={`p-2 w-full rounded-md ${
-                    selectedVote === "Projekt 1"
+                    selectedVote === "V skole ako doma"
                       ? "bg-blue-600 text-white"
                       : "bg-gray-300"
                   }`}
                 >
-                  Projekt 1
+                  V škole ako doma
                 </button>
                 <button
-                  onClick={() => setSelectedVote("Projekt 2")}
+                  onClick={() => setSelectedVote("Olympijsky den")}
                   className={`p-2 w-full rounded-md ${
-                    selectedVote === "Projekt 2"
+                    selectedVote === "Olympijsky den"
                       ? "bg-blue-600 text-white"
                       : "bg-gray-300"
                   }`}
                 >
-                  Projekt 2
+                  Olympijský deň
                 </button>
                 <button
-                  onClick={() => setSelectedVote("Projekt 3")}
+                  onClick={() => setSelectedVote("Tatranský tanier bezpecia")}
                   className={`p-2 w-full rounded-md ${
-                    selectedVote === "Projekt 3"
+                    selectedVote === "Tatransky tanier bezpecia"
                       ? "bg-blue-600 text-white"
                       : "bg-gray-300"
                   }`}
                 >
-                  Projekt 3
+                  Tatranský tanier bezpečia
                 </button>
                 <button
-                  onClick={() => setSelectedVote("Projekt 4")}
+                  onClick={() => setSelectedVote("Parla Zone")}
                   className={`p-2 w-full rounded-md ${
-                    selectedVote === "Projekt 4"
+                    selectedVote === "Parla Zone"
                       ? "bg-blue-600 text-white"
                       : "bg-gray-300"
                   }`}
                 >
-                  Projekt 4
+                  Parla Zone
                 </button>
                 <button
-                  onClick={() => setSelectedVote("Projekt 5")}
+                  onClick={() => setSelectedVote("Break Time Boost")}
                   className={`p-2 w-full rounded-md ${
-                    selectedVote === "Projekt 5"
+                    selectedVote === "Break Time Boost"
                       ? "bg-blue-600 text-white"
                       : "bg-gray-300"
                   }`}
                 >
-                  Projekt 5
+                  Break Time Boost
                 </button>
               </div>
 
               <button
                 onClick={handleVote}
                 disabled={hasVoted}
-                className="w-full bg-green-500 text-white p-2 rounded-md mt-4"
+                className={`w-full sm:w-auto px-4 py-2 rounded-md mt-4
+              text-white font-semibold transition 
+              ${
+                hasVoted
+                  ? "bg-gray-400 cursor-not-allowed" // Disabled state
+                  : "bg-green-500 hover:bg-green-600 active:bg-green-700"
+              } 
+              lg:px-6 lg:py-3 lg:text-lg`}
               >
                 Hlasuj
               </button>
