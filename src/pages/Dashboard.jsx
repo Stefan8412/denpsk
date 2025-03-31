@@ -167,7 +167,7 @@ const Dashboard = () => {
                   Olympijský deň
                 </button>
                 <button
-                  onClick={() => setSelectedVote("Tatranský tanier bezpecia")}
+                  onClick={() => setSelectedVote("Tatransky tanier bezpecia")}
                   className={`p-2 w-full rounded-md ${
                     selectedVote === "Tatransky tanier bezpecia"
                       ? "bg-blue-600 text-white"
