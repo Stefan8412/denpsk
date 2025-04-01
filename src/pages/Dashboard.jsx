@@ -147,9 +147,9 @@ const Dashboard = () => {
               <p className="text-lg">Označ projekt a stlač hlasuj:</p>
               <div className="mt-4 flex flex-col gap-4">
                 <button
-                  onClick={() => setSelectedVote("V skole ako doma")}
+                  onClick={() => setSelectedVote("V škole ako doma")}
                   className={`p-2 w-full rounded-md ${
-                    selectedVote === "V skole ako doma"
+                    selectedVote === "V škole ako doma"
                       ? "bg-blue-600 text-white"
                       : "bg-gray-300"
                   }`}
