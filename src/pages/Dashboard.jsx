@@ -22,18 +22,47 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedLogo, setSelectedLogo] = useState(null);
+  const [hasVotedLogo, setHasVotedLogo] = useState(false);
+
+  const logoOptions = [
+    { label: "Logo A", src: "logo-a.jpg" },
+    { label: "Logo B", src: "logo-b.jpg" },
+    { label: "Logo C", src: "logo-c.jpg" },
+    { label: "Logo D", src: "logo-d.jpg" },
+    { label: "Logo E", src: "logo-e.jpg" },
+  ];
 
   useEffect(() => {
     if (!userId) {
       navigate("/");
       return;
     }
+
+    const handleLogoVote = async () => {
+      if (!selectedLogo) return alert("Prosím vyber logo.");
+      if (hasVotedLogo) return alert("Už si hlasoval za logo.");
+
+      try {
+        await updateDoc(doc(db, "hlasovanieusers", userId), {
+          logoVote: selectedLogo,
+          hasVotedLogo: true,
+        });
+
+        alert("Hlas za logo zaznamenaný!");
+        setHasVotedLogo(true);
+      } catch (error) {
+        console.error("Error voting logo:", error);
+      }
+    };
+
     const fetchUser = async () => {
       const userDoc = await getDoc(doc(db, "hlasovanieusers", userId));
       if (userDoc.exists()) {
         const userData = userDoc.data();
         setUserName(userData.name);
         setHasVoted(userData.hasVoted);
+        setHasVotedLogo(userData.hasVotedLogo || false);
       } else {
         localStorage.removeItem("userId");
         navigate("/");
@@ -57,6 +86,22 @@ const Dashboard = () => {
       setHasVoted(true);
     } catch (error) {
       console.error("Error voting:", error);
+    }
+  };
+  const handleLogoVote = async () => {
+    if (!selectedLogo) return alert("Prosím vyber logo.");
+    if (hasVotedLogo) return alert("Už si hlasoval za logo.");
+
+    try {
+      await updateDoc(doc(db, "hlasovanieusers", userId), {
+        logoVote: selectedLogo,
+        hasVotedLogo: true,
+      });
+
+      alert("Hlas za logo zaznamenaný!");
+      setHasVotedLogo(true);
+    } catch (error) {
+      console.error("Error voting logo:", error);
     }
   };
 
@@ -124,7 +169,15 @@ const Dashboard = () => {
               duration={800}
               className="block md:inline-block p-4 md:p-1 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
             >
-              Hlasovanie
+              Projekty
+            </ScrollLink>
+            <ScrollLink
+              to="logo-voting-section"
+              smooth={true}
+              duration={800}
+              className="block md:inline-block p-4 md:p-1 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
+            >
+              Logo
             </ScrollLink>
             <button
               onClick={handleLogout}
@@ -139,7 +192,7 @@ const Dashboard = () => {
           id="hlasovanie-section"
           className="min-h-screen flex flex-col items-center justify-center p-6 mt-4 "
         >
-          <h2 className="text-4xl font-bold text-blue-600">Hlasovanie</h2>
+          <h2 className="text-4xl font-bold text-blue-600">Projekty</h2>
           {hasVoted ? (
             <p className="text-lg text-green-500">Už si hlasoval.</p>
           ) : (
@@ -211,6 +264,56 @@ const Dashboard = () => {
               lg:px-6 lg:py-3 lg:text-lg`}
               >
                 Hlasuj
+              </button>
+            </>
+          )}
+        </section>
+        <section
+          id="logo-voting-section"
+          className="min-h-screen flex flex-col items-center justify-center p-6 mt-4"
+        >
+          <h2 className="text-4xl font-bold text-blue-600">Logo</h2>
+          {hasVotedLogo ? (
+            <p className="text-lg text-green-500">Už si hlasoval za logo.</p>
+          ) : (
+            <>
+              <p className="text-lg">Vyber logo a stlač hlasuj:</p>
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {logoOptions.map((option) => (
+                  <div
+                    key={option.label}
+                    className={`cursor-pointer border-4 rounded-xl overflow-hidden transition-all duration-300 ${
+                      selectedLogo === option.label
+                        ? "border-blue-600 shadow-lg"
+                        : "border-transparent"
+                    }`}
+                    onClick={() => setSelectedLogo(option.label)}
+                  >
+                    <img
+                      src={option.src}
+                      alt={option.label}
+                      className="w-full h-48 object-contain bg-white"
+                    />
+                    <div className="text-center font-semibold py-2 bg-gray-100">
+                      {option.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                onClick={handleLogoVote}
+                disabled={hasVotedLogo}
+                className={`w-full sm:w-auto px-4 py-2 rounded-md mt-4
+        text-white font-semibold transition 
+        ${
+          hasVotedLogo
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-green-500 hover:bg-green-600 active:bg-green-700"
+        } 
+        lg:px-6 lg:py-3 lg:text-lg`}
+              >
+                Hlasuj za logo
               </button>
             </>
           )}

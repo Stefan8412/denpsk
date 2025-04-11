@@ -6,7 +6,9 @@ import { ScrollLink } from "react-scroll";
 import { Menu, X } from "lucide-react";
 
 const AdminDashboard = () => {
-  const [results, setResults] = useState([]);
+  const [projectResults, setProjectResults] = useState({});
+  const [logoResults, setLogoResults] = useState({});
+
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,16 +21,22 @@ const AdminDashboard = () => {
 
     const fetchResults = async () => {
       const usersCollection = await getDocs(collection(db, "hlasovanieusers"));
-      const votes = usersCollection.docs
-        .map((doc) => doc.data())
-        .filter((user) => user.vote); // Filter users who have voted
+      const users = usersCollection.docs.map((doc) => doc.data()); // Filter users who have voted
 
-      const voteCounts = votes.reduce((acc, user) => {
-        acc[user.vote] = (acc[user.vote] || 0) + 1;
-        return acc;
-      }, {});
+      const projectVotes = {};
+      const logoVotes = {};
 
-      setResults(voteCounts);
+      users.forEach((user) => {
+        if (user.vote) {
+          projectVotes[user.vote] = (projectVotes[user.vote] || 0) + 1;
+        }
+        if (user.logoVote) {
+          logoVotes[user.logoVote] = (logoVotes[user.logoVote] || 0) + 1;
+        }
+      });
+
+      setProjectResults(projectVotes);
+      setLogoResults(logoVotes);
     };
 
     fetchResults();
@@ -80,14 +88,37 @@ const AdminDashboard = () => {
         id="home-section"
         className="flex flex-col items-center justify-center min-h-screen p-6"
       >
-        <h3 className="text-xl font-semibold">Výsledky:</h3>
-        <ul className="mt-4">
-          {Object.entries(results).map(([option, count]) => (
-            <li key={option} className="text-lg">
-              {option}: {count} hlasov
-            </li>
-          ))}
-        </ul>
+        <h3 className="text-2xl font-bold text-blue-600">
+          Výsledky hlasovania
+        </h3>
+
+        <div className="mt-8">
+          <h4 className="text-xl font-semibold mb-2">📊 Projekty:</h4>
+          <ul className="list-disc list-inside space-y-1">
+            {Object.entries(projectResults).map(([option, count]) => (
+              <li key={option} className="text-lg">
+                {option}: {count} hlasov
+              </li>
+            ))}
+            {Object.keys(projectResults).length === 0 && (
+              <li className="text-gray-500">Žiadne hlasy</li>
+            )}
+          </ul>
+        </div>
+
+        <div className="mt-8">
+          <h4 className="text-xl font-semibold mb-2">🎨 Logá:</h4>
+          <ul className="list-disc list-inside space-y-1">
+            {Object.entries(logoResults).map(([option, count]) => (
+              <li key={option} className="text-lg">
+                {option}: {count} hlasov
+              </li>
+            ))}
+            {Object.keys(logoResults).length === 0 && (
+              <li className="text-gray-500">Žiadne hlasy</li>
+            )}
+          </ul>
+        </div>
       </section>
     </div>
   );
