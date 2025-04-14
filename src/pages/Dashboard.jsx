@@ -30,7 +30,7 @@ const Dashboard = () => {
     { label: "Logo B", src: "logo-b.jpg" },
     { label: "Logo C", src: "logo-c.jpg" },
     { label: "Logo D", src: "logo-d.jpg" },
-    { label: "Logo E", src: "logo-e.jpg" },
+    { label: "Logo E", src: "logo-e.png" },
     { label: "Logo F", src: "logo-f.jpg" },
   ];
 
