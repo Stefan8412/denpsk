@@ -190,7 +190,7 @@ const Dashboard = () => {
             </button>
           </div>
         </nav>
-        console.log("canvoteproject", canVoteProject)
+
         {canVoteProject ? (
           <section
             id="hlasovanie-section"
@@ -225,7 +225,7 @@ const Dashboard = () => {
                     Olympijský deň
                   </button>
                   <button
-                    onClick={() => setSelectedVote("Tatransky tanier bezpecia")}
+                    onClick={() => setSelectedVote("Tatransky tanier bezpečia")}
                     className={`p-2 w-full rounded-md ${
                       selectedVote === "Tatransky tanier bezpecia"
                         ? "bg-blue-600 text-white"

@@ -13,6 +13,15 @@ const AdminDashboard = () => {
   const role = localStorage.getItem("role");
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const logoImageMap = {
+    "Logo A": "/logo-a.jpg",
+    "Logo B": "/logo-b.jpg",
+    "Logo C": "/logo-c.jpg",
+    "Logo D": "/logo-d.jpgg",
+    "Logo E": "/logo-e.png",
+    "Logo F": "/logo-f.jpg",
+  };
+
   useEffect(() => {
     if (role !== "admin") {
       navigate("/");
@@ -110,13 +119,22 @@ const AdminDashboard = () => {
           <h4 className="text-xl font-semibold mb-2">🎨 Logá:</h4>
           <ul className="list-disc list-inside space-y-1">
             {Object.entries(logoResults).map(([option, count]) => (
-              <li key={option} className="text-lg">
-                {option}: {count} hlasov
+              <li
+                key={option}
+                className="flex items-center space-x-4 text-lg mb-2"
+              >
+                {logoImageMap[option] && (
+                  <img
+                    src={logoImageMap[option]}
+                    alt={`Logo ${option}`}
+                    className="w-16 h-16 object-contain border rounded"
+                  />
+                )}
+                <span>
+                  {option}: {count} hlasov
+                </span>
               </li>
             ))}
-            {Object.keys(logoResults).length === 0 && (
-              <li className="text-gray-500">Žiadne hlasy</li>
-            )}
           </ul>
         </div>
       </section>
