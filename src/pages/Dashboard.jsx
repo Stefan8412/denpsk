@@ -24,6 +24,7 @@ const Dashboard = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLogo, setSelectedLogo] = useState(null);
   const [hasVotedLogo, setHasVotedLogo] = useState(false);
+  const [canVoteProject, setCanVoteProject] = useState(true);
 
   const logoOptions = [
     { label: "Logo A", src: "logo-a.jpg" },
@@ -64,6 +65,7 @@ const Dashboard = () => {
         setUserName(userData.name);
         setHasVoted(userData.hasVoted);
         setHasVotedLogo(userData.hasVotedLogo || false);
+        setCanVoteProject(userData.canVoteProject ?? true);
       } else {
         localStorage.removeItem("userId");
         navigate("/");
@@ -188,74 +190,76 @@ const Dashboard = () => {
             </button>
           </div>
         </nav>
+        console.log("canvoteproject", canVoteProject)
+        {canVoteProject ? (
+          <section
+            id="hlasovanie-section"
+            className="min-h-screen flex flex-col items-center justify-center p-6 mt-4 "
+          >
+            <h2 className="text-4xl font-bold text-blue-600">Projekty</h2>
 
-        <section
-          id="hlasovanie-section"
-          className="min-h-screen flex flex-col items-center justify-center p-6 mt-4 "
-        >
-          <h2 className="text-4xl font-bold text-blue-600">Projekty</h2>
-          {hasVoted ? (
-            <p className="text-lg text-green-500">Už si hlasoval.</p>
-          ) : (
-            <>
-              <p className="text-lg">Označ projekt a stlač hlasuj:</p>
-              <div className="mt-4 flex flex-col gap-4">
-                <button
-                  onClick={() => setSelectedVote("V škole ako doma")}
-                  className={`p-2 w-full rounded-md ${
-                    selectedVote === "V škole ako doma"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  V škole ako doma
-                </button>
-                <button
-                  onClick={() => setSelectedVote("Olympijsky den")}
-                  className={`p-2 w-full rounded-md ${
-                    selectedVote === "Olympijsky den"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  Olympijský deň
-                </button>
-                <button
-                  onClick={() => setSelectedVote("Tatransky tanier bezpecia")}
-                  className={`p-2 w-full rounded-md ${
-                    selectedVote === "Tatransky tanier bezpecia"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  Tatranský tanier bezpečia
-                </button>
-                <button
-                  onClick={() => setSelectedVote("Parla Zone")}
-                  className={`p-2 w-full rounded-md ${
-                    selectedVote === "Parla Zone"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  Parla Zone
-                </button>
-                <button
-                  onClick={() => setSelectedVote("Break Time Boost")}
-                  className={`p-2 w-full rounded-md ${
-                    selectedVote === "Break Time Boost"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  Break Time Boost
-                </button>
-              </div>
+            {hasVoted ? (
+              <p className="text-lg text-green-500">Už si hlasoval.</p>
+            ) : (
+              <>
+                <p className="text-lg">Označ projekt a stlač hlasuj:</p>
+                <div className="mt-4 flex flex-col gap-4">
+                  <button
+                    onClick={() => setSelectedVote("V škole ako doma")}
+                    className={`p-2 w-full rounded-md ${
+                      selectedVote === "V škole ako doma"
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-300"
+                    }`}
+                  >
+                    V škole ako doma
+                  </button>
+                  <button
+                    onClick={() => setSelectedVote("Olympijsky den")}
+                    className={`p-2 w-full rounded-md ${
+                      selectedVote === "Olympijsky den"
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-300"
+                    }`}
+                  >
+                    Olympijský deň
+                  </button>
+                  <button
+                    onClick={() => setSelectedVote("Tatransky tanier bezpecia")}
+                    className={`p-2 w-full rounded-md ${
+                      selectedVote === "Tatransky tanier bezpecia"
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-300"
+                    }`}
+                  >
+                    Tatranský tanier bezpečia
+                  </button>
+                  <button
+                    onClick={() => setSelectedVote("Parla Zone")}
+                    className={`p-2 w-full rounded-md ${
+                      selectedVote === "Parla Zone"
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-300"
+                    }`}
+                  >
+                    Parla Zone
+                  </button>
+                  <button
+                    onClick={() => setSelectedVote("Break Time Boost")}
+                    className={`p-2 w-full rounded-md ${
+                      selectedVote === "Break Time Boost"
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-300"
+                    }`}
+                  >
+                    Break Time Boost
+                  </button>
+                </div>
 
-              <button
-                onClick={handleVote}
-                disabled={hasVoted}
-                className={`w-full sm:w-auto px-4 py-2 rounded-md mt-4
+                <button
+                  onClick={handleVote}
+                  disabled={hasVoted}
+                  className={`w-full sm:w-auto px-4 py-2 rounded-md mt-4
               text-white font-semibold transition 
               ${
                 hasVoted
@@ -263,12 +267,23 @@ const Dashboard = () => {
                   : "bg-green-500 hover:bg-green-600 active:bg-green-700"
               } 
               lg:px-6 lg:py-3 lg:text-lg`}
-              >
-                Hlasuj
-              </button>
-            </>
-          )}
-        </section>
+                >
+                  Hlasuj
+                </button>
+              </>
+            )}
+          </section>
+        ) : (
+          <section
+            id="hlasovanie-section"
+            className="min-h-screen flex flex-col items-center justify-center p-6 mt-4 "
+          >
+            <h2 className="text-4xl font-bold text-blue-600">Projekty</h2>
+            <p className="text-lg text-red-500 mt-4">
+              Tvoje konto nemá oprávnenie hlasovať za projekt.
+            </p>
+          </section>
+        )}
         <section
           id="logo-voting-section"
           className="min-h-screen flex flex-col items-center justify-center p-6 mt-4"
