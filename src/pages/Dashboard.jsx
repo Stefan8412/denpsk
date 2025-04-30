@@ -225,9 +225,9 @@ const Dashboard = () => {
                     Olympijský deň
                   </button>
                   <button
-                    onClick={() => setSelectedVote("Tatransky tanier bezpečia")}
+                    onClick={() => setSelectedVote("Tatranský tanier bezpečia")}
                     className={`p-2 w-full rounded-md ${
-                      selectedVote === "Tatransky tanier bezpecia"
+                      selectedVote === "Tatranský tanier bezpečia"
                         ? "bg-blue-600 text-white"
                         : "bg-gray-300"
                     }`}
