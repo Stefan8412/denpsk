@@ -17,7 +17,7 @@ const AdminDashboard = () => {
     "Logo A": "/logo-a.jpg",
     "Logo B": "/logo-b.jpg",
     "Logo C": "/logo-c.jpg",
-    "Logo D": "/logo-d.jpgg",
+    "Logo D": "/logo-d.jpg",
     "Logo E": "/logo-e.png",
     "Logo F": "/logo-f.jpg",
   };
