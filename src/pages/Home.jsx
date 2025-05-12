@@ -135,7 +135,7 @@ const Home = () => {
             duration={800}
             className="block md:inline-block p-4 md:p-1 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
           >
-            Program
+            Školy
           </ScrollLink>
           <ScrollLink
             onClick={() => setMenuOpen(false)}
@@ -144,7 +144,7 @@ const Home = () => {
             duration={800}
             className="block md:inline-block p-4 md:p-1 text-gray-900 font-bold cursor-pointer hover:text-blue-500"
           >
-            QR
+            Aktuality
           </ScrollLink>
         </div>
       </nav>
@@ -158,7 +158,7 @@ const Home = () => {
         <h1 className="text-4xl font-bold text-white">
           Tu bude web pre mladez
         </h1>
-        <form
+        {/*  <form
           onSubmit={handleLogin}
           className="mt-6 bg-white p-6 rounded-lg shadow-md w-80"
         >
@@ -176,7 +176,7 @@ const Home = () => {
           >
             Prihlásiť sa
           </button>
-        </form>
+        </form> */}
       </section>
 
       {/* Program Section */}
@@ -186,7 +186,7 @@ const Home = () => {
       >
         {/* Event Cover Image */}
         <img
-          src="/program.png" // Update with your actual image path
+          src="/kniznica.jpg" // Update with your actual image path
           alt="Event Cover"
           className="w-full max-w-4xl h-auto object-cover rounded-lg shadow-lg
                sm:max-w-3xl md:max-w-2xl lg:max-w-full"
@@ -196,9 +196,9 @@ const Home = () => {
         id="qr-section"
         className="min-h-screen flex flex-col items-center justify-center p-6 bg-white"
       >
-        <h2 className="text-3xl font-bold text-blue-600">5.5.2025</h2>
+        <h2 className="text-3xl font-bold text-blue-600">aktuality</h2>
         <p className="mt-4 text-center text-gray-700 max-w-2xl">
-          <QRCodeGenerator />
+          <CountdownTimer />
         </p>
       </section>
     </div>
