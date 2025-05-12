@@ -103,7 +103,7 @@ const Home = () => {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 w-full bg-white shadow-md p-4 flex justify-between items-center z-50">
         <img
-          src="/erbbiely.jpg"
+          src="/logo-f-removebg.png"
           alt="PSK Logo"
           className="h-16 cursor-pointer"
           onClick={() => navigate("/")}
