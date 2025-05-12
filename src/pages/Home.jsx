@@ -155,7 +155,9 @@ const Home = () => {
         id="home-section"
         className="flex flex-col items-center justify-center min-h-screen p-6"
       >
-        <h1 className="text-4xl font-bold text-white">Prihlásenie</h1>
+        <h1 className="text-4xl font-bold text-white">
+          Tu bude web pre mladez
+        </h1>
         <form
           onSubmit={handleLogin}
           className="mt-6 bg-white p-6 rounded-lg shadow-md w-80"
