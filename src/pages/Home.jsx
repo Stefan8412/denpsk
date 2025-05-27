@@ -105,7 +105,7 @@ const Home = () => {
         <img
           src="/logo-f-removebg.png"
           alt="PSK Logo"
-          className="h-16 cursor-pointer"
+          className="h-24 cursor-pointer"
           onClick={() => navigate("/")}
         />
         <button
@@ -150,12 +150,12 @@ const Home = () => {
       </nav>
 
       {/* Login Section */}
-      <ParticlesBg type="circle" config={config} bg={true} />
+      <ParticlesBg type="cobweb" config={config} bg={true} />
       <section
         id="home-section"
         className="flex flex-col items-center justify-center min-h-screen p-6"
       >
-        <h1 className="text-4xl font-bold text-white">
+        <h1 className="text-4xl font-bold text-black">
           Tu bude web pre mladez
         </h1>
         {/*  <form
